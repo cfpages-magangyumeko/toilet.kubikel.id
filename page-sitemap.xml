@@ -2,7 +2,7 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>/</loc>
-		<lastmod>2023-03-27T05:57:06+00:00</lastmod>
+		<lastmod>2023-03-28T04:20:32+00:00</lastmod>
 		<image:image>
 			<image:loc>/wp-content/uploads/2023/03/cubicle-single-door.jpg</image:loc>
 		</image:image>
@@ -29,8 +29,12 @@
 		</image:image>
 	</url>
 	<url>
+		<loc>/berita/</loc>
+		<lastmod>2023-03-28T08:18:45+00:00</lastmod>
+	</url>
+	<url>
 		<loc>/phenolic-board/</loc>
-		<lastmod>2023-03-27T06:02:42+00:00</lastmod>
+		<lastmod>2023-03-28T04:28:41+00:00</lastmod>
 		<image:image>
 			<image:loc>/wp-content/uploads/2023/03/keunggulan-phenolic.jpg</image:loc>
 		</image:image>
@@ -76,7 +80,7 @@
 	</url>
 	<url>
 		<loc>/toilet-pvc/</loc>
-		<lastmod>2023-03-27T06:02:01+00:00</lastmod>
+		<lastmod>2023-03-28T04:28:04+00:00</lastmod>
 		<image:image>
 			<image:loc>/wp-content/uploads/2023/03/PVC-board.jpg</image:loc>
 		</image:image>
@@ -122,7 +126,7 @@
 	</url>
 	<url>
 		<loc>/premium/</loc>
-		<lastmod>2023-03-27T06:01:15+00:00</lastmod>
+		<lastmod>2023-03-28T04:27:27+00:00</lastmod>
 		<image:image>
 			<image:loc>/wp-content/uploads/2023/03/cubicle-premium.jpg</image:loc>
 		</image:image>
@@ -165,7 +169,7 @@
 	</url>
 	<url>
 		<loc>/standar/</loc>
-		<lastmod>2023-03-27T06:00:34+00:00</lastmod>
+		<lastmod>2023-03-28T04:26:01+00:00</lastmod>
 		<image:image>
 			<image:loc>/wp-content/uploads/2023/03/cubicle-standar.jpg</image:loc>
 		</image:image>
@@ -208,7 +212,7 @@
 	</url>
 	<url>
 		<loc>/two-tone/</loc>
-		<lastmod>2023-03-27T05:59:55+00:00</lastmod>
+		<lastmod>2023-03-28T04:21:38+00:00</lastmod>
 		<image:image>
 			<image:loc>/wp-content/uploads/2023/03/cubicle-two-tone.jpg</image:loc>
 		</image:image>
@@ -251,7 +255,7 @@
 	</url>
 	<url>
 		<loc>/single-door/</loc>
-		<lastmod>2023-03-27T05:59:16+00:00</lastmod>
+		<lastmod>2023-03-28T04:19:38+00:00</lastmod>
 		<image:image>
 			<image:loc>/wp-content/uploads/2023/03/cubicle-single-door.jpg</image:loc>
 		</image:image>
@@ -291,10 +295,6 @@
 		<image:image>
 			<image:loc>/wp-content/uploads/2023/03/testimonial-12-free-img.jpg</image:loc>
 		</image:image>
-	</url>
-	<url>
-		<loc>/berita/</loc>
-		<lastmod>2023-03-25T04:09:00+00:00</lastmod>
 	</url>
 	<url>
 		<loc>/laman-contoh/</loc>
