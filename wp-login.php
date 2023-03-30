@@ -4,11 +4,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Log Masuk &lsaquo; Toilet.Kubikel.id &#8212; WordPress</title>
 	<meta name="robots" content="max-image-preview:large, noindex, noarchive">
-<link rel="stylesheet" id="dashicons-css" href="/wp-includes/css/dashicons.min.css?ver=6.1.1" media="all">
-<link rel="stylesheet" id="buttons-css" href="/wp-includes/css/buttons.min.css?ver=6.1.1" media="all">
-<link rel="stylesheet" id="forms-css" href="/wp-admin/css/forms.min.css?ver=6.1.1" media="all">
-<link rel="stylesheet" id="l10n-css" href="/wp-admin/css/l10n.min.css?ver=6.1.1" media="all">
-<link rel="stylesheet" id="login-css" href="/wp-admin/css/login.min.css?ver=6.1.1" media="all">
+<link rel="stylesheet" id="dashicons-css" href="/wp-includes/css/dashicons.min.css?ver=6.2" media="all">
+<link rel="stylesheet" id="buttons-css" href="/wp-includes/css/buttons.min.css?ver=6.2" media="all">
+<link rel="stylesheet" id="forms-css" href="/wp-admin/css/forms.min.css?ver=6.2" media="all">
+<link rel="stylesheet" id="l10n-css" href="/wp-admin/css/l10n.min.css?ver=6.2" media="all">
+<link rel="stylesheet" id="login-css" href="/wp-admin/css/login.min.css?ver=6.2" media="all">
 	<meta name="referrer" content="strict-origin-when-cross-origin">
 		<meta name="viewport" content="width=device-width">
 		</head>
@@ -26,7 +26,7 @@
 			<div class="user-pass-wrap">
 				<label for="user_pass">Sandi</label>
 				<div class="wp-pwd">
-					<input type="password" name="pwd" id="user_pass" class="input password-input" value="" size="20" autocomplete="current-password">
+					<input type="password" name="pwd" id="user_pass" class="input password-input" value="" size="20" autocomplete="current-password" spellcheck="false">
 					<button type="button" class="button button-secondary wp-hide-pw hide-if-no-js" data-toggle="0" aria-label="Tampilkan sandi">
 						<span class="dashicons dashicons-visibility" aria-hidden="true"></span>
 					</button>
@@ -53,7 +53,8 @@ if ( typeof wpOnload === 'function' ) { wpOnload() }</script>
 
 					<label for="language-switcher-locales">
 						<span class="dashicons dashicons-translation" aria-hidden="true"></span>
-						<span class="screen-reader-text">Bahasa</span>
+						<span class="screen-reader-text">
+							Bahasa						</span>
 					</label>
 
 					<select name="wp_lang" id="language-switcher-locales"><option value="en_US" lang="en" data-installed="1">English (United States)</option>
@@ -65,11 +66,12 @@ if ( typeof wpOnload === 'function' ) { wpOnload() }</script>
 
 					</form>
 				</div>
-				<script src="/wp-includes/js/jquery/jquery.min.js?ver=3.6.1" id="jquery-core-js"></script>
-<script src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
+				<script src="/wp-includes/js/jquery/jquery.min.js?ver=3.6.3" id="jquery-core-js"></script>
+<script src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.0" id="jquery-migrate-js"></script>
 <script id="zxcvbn-async-js-extra">var _zxcvbnSettings = {"src":"\/wp-includes\/js\/zxcvbn.min.js"};</script>
 <script src="/wp-includes/js/zxcvbn-async.min.js?ver=1.0" id="zxcvbn-async-js"></script>
-<script src="/wp-includes/js/dist/vendor/regenerator-runtime.min.js?ver=0.13.9" id="regenerator-runtime-js"></script>
+<script src="/wp-includes/js/dist/vendor/wp-polyfill-inert.min.js?ver=3.1.2" id="wp-polyfill-inert-js"></script>
+<script src="/wp-includes/js/dist/vendor/regenerator-runtime.min.js?ver=0.13.11" id="regenerator-runtime-js"></script>
 <script src="/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0" id="wp-polyfill-js"></script>
 <script src="/wp-includes/js/dist/hooks.min.js?ver=4169d3cf8e8d95a3d6d5" id="wp-hooks-js"></script>
 <script src="/wp-includes/js/dist/i18n.min.js?ver=9e794f35a71bb98672ae" id="wp-i18n-js"></script>
@@ -81,18 +83,18 @@ wp.i18n.setLocaleData( { 'text directionltr': [ 'ltr' ] } );
 	var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
 	localeData[""].domain = domain;
 	wp.i18n.setLocaleData( localeData, domain );
-} )( "default", {"translation-revision-date":"2023-03-03 08:44:20+0000","generator":"GlotPress\/4.0.0-alpha.4","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=2; plural=n > 1;","lang":"id"},"%1$s is deprecated since version %2$s! Use %3$s instead. Please consider writing more inclusive code.":["%1$s telah kedaluarsa sejak versi %2$s! Gunakan %3$s sebagai gantinya. Silakan pertimbangkan untuk menulis kode yang lebih inklusif."]}},"comment":{"reference":"wp-admin\/js\/password-strength-meter.js"}} );</script>
-<script src="/wp-admin/js/password-strength-meter.min.js?ver=6.1.1" id="password-strength-meter-js"></script>
+} )( "default", {"translation-revision-date":"2023-03-18 05:33:19+0000","generator":"GlotPress\/4.0.0-alpha.4","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=2; plural=n > 1;","lang":"id"},"%1$s is deprecated since version %2$s! Use %3$s instead. Please consider writing more inclusive code.":["%1$s telah kedaluarsa sejak versi %2$s! Gunakan %3$s sebagai gantinya. Silakan pertimbangkan untuk menulis kode yang lebih inklusif."]}},"comment":{"reference":"wp-admin\/js\/password-strength-meter.js"}} );</script>
+<script src="/wp-admin/js/password-strength-meter.min.js?ver=6.2" id="password-strength-meter-js"></script>
 <script src="/wp-includes/js/underscore.min.js?ver=1.13.4" id="underscore-js"></script>
 <script id="wp-util-js-extra">var _wpUtilSettings = {"ajax":{"url":"\/toiletkubikel\/wp-admin\/admin-ajax.php"}};</script>
-<script src="/wp-includes/js/wp-util.min.js?ver=6.1.1" id="wp-util-js"></script>
-<script id="user-profile-js-extra">var userProfileL10n = {"user_id":"0","nonce":"1be6c8b913"};</script>
+<script src="/wp-includes/js/wp-util.min.js?ver=6.2" id="wp-util-js"></script>
+<script id="user-profile-js-extra">var userProfileL10n = {"user_id":"0","nonce":"b4b239e97f"};</script>
 <script id="user-profile-js-translations">( function( domain, translations ) {
 	var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
 	localeData[""].domain = domain;
 	wp.i18n.setLocaleData( localeData, domain );
-} )( "default", {"translation-revision-date":"2023-03-03 08:44:20+0000","generator":"GlotPress\/4.0.0-alpha.4","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=2; plural=n > 1;","lang":"id"},"Your new password has not been saved.":["Sandi baru Anda belum disimpan."],"Hide":["Sembunyikan"],"Show":["Tampilkan"],"Confirm use of weak password":["Setujui penggunaan sandi yang lemah"],"Hide password":["Sembunyikan sandi"],"Show password":["Tampilkan sandi"]}},"comment":{"reference":"wp-admin\/js\/user-profile.js"}} );</script>
-<script src="/wp-admin/js/user-profile.min.js?ver=6.1.1" id="user-profile-js"></script>
+} )( "default", {"translation-revision-date":"2023-03-18 05:33:19+0000","generator":"GlotPress\/4.0.0-alpha.4","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=2; plural=n > 1;","lang":"id"},"Your new password has not been saved.":["Sandi baru Anda belum disimpan."],"Hide":["Sembunyikan"],"Show":["Tampilkan"],"Confirm use of weak password":["Setujui penggunaan sandi yang lemah"],"Hide password":["Sembunyikan sandi"],"Show password":["Tampilkan sandi"]}},"comment":{"reference":"wp-admin\/js\/user-profile.js"}} );</script>
+<script src="/wp-admin/js/user-profile.min.js?ver=6.2" id="user-profile-js"></script>
 			<script>/(trident|msie)/i.test(navigator.userAgent)&&document.getElementById&&window.addEventListener&&window.addEventListener("hashchange",function(){var t,e=location.hash.substring(1);/^[A-z0-9_-]+$/.test(e)&&(t=document.getElementById(e))&&(/^(?:a|select|input|button|textarea)$/i.test(t.tagName)||(t.tabIndex=-1),t.focus())},!1);</script>
 				<div class="clear"></div>
 	</body>
