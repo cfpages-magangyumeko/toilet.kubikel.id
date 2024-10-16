@@ -1,4 +1,4 @@
-name: Multi Search and Replace v.5
+name: Multi Search and Replace v.5.5
 on:
   workflow_dispatch:
     inputs:
@@ -28,12 +28,35 @@ jobs:
           REPLACE_PHRASES: ${{ github.event.inputs.replace_phrases }}
           FILE_NAME_CONTAINS: ${{ github.event.inputs.file_name_contains }}
         run: |
+          # Print operation summary
+          echo "=== Search and Replace Operation Summary ==="
+          echo "Timestamp: $(date +'%Y-%m-%d %H:%M:%S')"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo -e "\n=== Input Parameters ==="
+          echo "Search phrases:"
           IFS='|' read -r -a SEARCH_ARRAY <<< "${SEARCH_PHRASES}"
+          for phrase in "${SEARCH_ARRAY[@]}"; do
+            echo "  - '$phrase'"
+          done
+          
+          echo -e "\nReplace phrases:"
           IFS='|' read -r -a REPLACE_ARRAY <<< "${REPLACE_PHRASES}"
+          for phrase in "${REPLACE_ARRAY[@]}"; do
+            echo "  - '$phrase'"
+          done
+          
+          echo -e "\nFile filter pattern: ${FILE_NAME_CONTAINS:-'(no filter, all HTML files)'}"
+          
+          # Validate search and replace arrays
           if [ "${#SEARCH_ARRAY[@]}" -ne "${#REPLACE_ARRAY[@]}" ]; then
-            echo "Error: Mismatch in number of search & replace phrases."
+            echo -e "\n❌ Error: Mismatch in number of search & replace phrases."
+            echo "Search phrases: ${#SEARCH_ARRAY[@]}"
+            echo "Replace phrases: ${#REPLACE_ARRAY[@]}"
             exit 1
           fi
+          
+          echo -e "\n=== Processing Files ==="
           
           MATCHING_FILES=()
           if [ -z "$FILE_NAME_CONTAINS" ]; then
@@ -42,6 +65,13 @@ jobs:
           else
             # Create an array for filename filtering patterns
             IFS='|' read -r -a OR_PATTERNS <<< "${FILE_NAME_CONTAINS}"
+            echo "File pattern components:"
+            for OR_PATTERN in "${OR_PATTERNS[@]}"; do
+              echo "  OR pattern: '$OR_PATTERN'"
+              IFS='+' read -r -a AND_SEGMENTS <<< "${OR_PATTERN}"
+              echo "    AND segments: ${AND_SEGMENTS[*]}"
+            done
+            
             # Find matching files
             for OR_PATTERN in "${OR_PATTERNS[@]}"; do
               IFS='+' read -r -a AND_SEGMENTS <<< "${OR_PATTERN}"
@@ -49,10 +79,8 @@ jobs:
               for SEGMENT in "${AND_SEGMENTS[@]}"; do
                 AND_COND="${AND_COND} -and -name \"*${SEGMENT}*\""
               done
-              # Remove leading "-and" if it exists
               AND_COND="${AND_COND# -and }"
               if [ -n "$AND_COND" ]; then
-                # Only find .html files
                 found_files=($(find . -type f -name "*.html" ${AND_COND} 2>/dev/null || echo ""))
                 MATCHING_FILES+=("${found_files[@]}")
               fi
@@ -62,33 +90,57 @@ jobs:
           # Remove duplicates and empty entries, and ensure only .html files
           MATCHING_FILES=($(printf "%s\n" "${MATCHING_FILES[@]}" | grep "\.html$" | sort -u || echo ""))
           
+          echo -e "\nMatching files found: ${#MATCHING_FILES[@]}"
           if [ ${#MATCHING_FILES[@]} -eq 0 ]; then
-            echo "No matching HTML files found."
+            echo "❌ No matching HTML files found."
             exit 0
           fi
           
-          # Perform search and replace only on existing .html files
+          echo "Files to process:"
+          for FILE in "${MATCHING_FILES[@]}"; do
+            echo "  - $FILE"
+          done
+          
+          # Perform search and replace
+          MODIFIED_FILES=0
           for FILE in "${MATCHING_FILES[@]}"; do
             if [[ -f "$FILE" && "$FILE" == *.html ]]; then
-              echo "Processing HTML file: $FILE"
+              echo -e "\nProcessing: $FILE"
+              FILE_MODIFIED=0
               for i in "${!SEARCH_ARRAY[@]}"; do
-                sed -i "s|$(printf '%s\n' "${SEARCH_ARRAY[$i]}" | sed 's:[\\/&]:\\&:g')|$(printf '%s\n' "${REPLACE_ARRAY[$i]}" | sed 's:[\\/&]:\\&:g')|g" "$FILE"
+                if grep -q "${SEARCH_ARRAY[$i]}" "$FILE"; then
+                  sed -i "s|$(printf '%s\n' "${SEARCH_ARRAY[$i]}" | sed 's:[\\/&]:\\&:g')|$(printf '%s\n' "${REPLACE_ARRAY[$i]}" | sed 's:[\\/&]:\\&:g')|g" "$FILE"
+                  echo "  ✓ Replaced '${SEARCH_ARRAY[$i]}' with '${REPLACE_ARRAY[$i]}'"
+                  FILE_MODIFIED=1
+                fi
               done
+              if [ $FILE_MODIFIED -eq 1 ]; then
+                ((MODIFIED_FILES++))
+              fi
             fi
           done
           
+          echo -e "\n=== Operation Complete ==="
+          echo "Files processed: ${#MATCHING_FILES[@]}"
+          echo "Files modified: $MODIFIED_FILES"
+          
           # Check if there are changes to commit
           if git diff --quiet; then
-            echo "No changes to commit"
+            echo -e "\n📝 No changes to commit"
             exit 0
           fi
           
+          echo -e "\n📝 Committing changes..."
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
-          git commit -m "Batch replace on $(date +'%Y-%m-%d')"
+          git commit -m "Batch replace on $(date +'%Y-%m-%d') - Modified $MODIFIED_FILES files"
+          echo "✅ Changes committed successfully"
+      
       - name: Push changes
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
+          echo "🚀 Pushing changes to repository..."
           git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} HEAD:main
+          echo "✅ Changes pushed successfully"
