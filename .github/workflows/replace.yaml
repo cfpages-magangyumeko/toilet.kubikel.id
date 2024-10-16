@@ -1,4 +1,4 @@
-name: Multi Search and Replace v.6
+name: Multi Search and Replace v.7
 on:
   workflow_dispatch:
     inputs:
@@ -28,11 +28,33 @@ jobs:
           REPLACE_PHRASES: ${{ github.event.inputs.replace_phrases }}
           FILE_NAME_CONTAINS: ${{ github.event.inputs.file_name_contains }}
         run: |
-          # Print initial debug info
-          echo "Current directory: $(pwd)"
-          echo "List of all HTML files in repository:"
-          find . -type f -name "*.html" -ls
+          # Print operation summary
+          echo "=== Search and Replace Operation Summary ==="
+          echo "Timestamp: $(date +'%Y-%m-%d %H:%M:%S')"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo -e "\n=== Input Parameters ==="
+          echo "Search phrases:"
+          IFS='|' read -r -a SEARCH_ARRAY <<< "${SEARCH_PHRASES}"
+          for phrase in "${SEARCH_ARRAY[@]}"; do
+            echo "  - '$phrase'"
+          done
           
+          echo -e "\nReplace phrases:"
+          IFS='|' read -r -a REPLACE_ARRAY <<< "${REPLACE_PHRASES}"
+          for phrase in "${REPLACE_ARRAY[@]}"; do
+            echo "  - '$phrase'"
+          done
+
+          # Validate search and replace arrays
+          if [ "${#SEARCH_ARRAY[@]}" -ne "${#REPLACE_ARRAY[@]}" ]; then
+            echo -e "\n❌ Error: Mismatch in number of search & replace phrases."
+            echo "Search phrases: ${#SEARCH_ARRAY[@]}"
+            echo "Replace phrases: ${#REPLACE_ARRAY[@]}"
+            exit 1
+          fi
+
+          # Print initial debug info          
           echo -e "\n=== Input Parameters ==="
           echo "File filter pattern: ${FILE_NAME_CONTAINS:-'(no filter, all HTML files)'}"
           
