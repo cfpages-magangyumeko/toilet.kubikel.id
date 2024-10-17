@@ -1,4 +1,4 @@
-name: Multi Search and Replace v.7python
+name: Multi Search and Replace v.7.1 py
 on:
   workflow_dispatch:
     inputs:
@@ -106,7 +106,7 @@ jobs:
             echo "  - $FILE"
           done
           
-          # Perform search and replace using Python for better Unicode handling
+          # Perform search and replace using Python
           cat << 'EOF' > replace.py
           import sys
           import os
@@ -147,8 +147,10 @@ jobs:
               print(f"Files processed: {len(files)}")
               print(f"Files modified: {modified_count}")
               
-              # Exit with success only if we modified at least one file
-              sys.exit(0 if modified_count > 0 else 1)
+              # Always exit with code 0 unless there's an actual error
+              if modified_count == 0:
+                  print("No files needed modification - completing successfully")
+              sys.exit(0)
           EOF
           
           python3 replace.py "$SEARCH_PHRASES" "$REPLACE_PHRASES" "${MATCHING_FILES[@]}"
