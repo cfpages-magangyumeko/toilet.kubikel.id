@@ -1,4 +1,4 @@
-name: Multi Search and Replace v.7
+name: Multi Search and Replace v.7python
 on:
   workflow_dispatch:
     inputs:
@@ -64,21 +64,18 @@ jobs:
             MATCHING_FILES=($(find . -type f -name "*.html" 2>/dev/null || echo ""))
           else
             echo -e "\nProcessing filter patterns..."
-            # Create an array for filename filtering patterns
             IFS='|' read -r -a OR_PATTERNS <<< "${FILE_NAME_CONTAINS}"
             
             for OR_PATTERN in "${OR_PATTERNS[@]}"; do
               echo "Processing OR pattern: '$OR_PATTERN'"
               IFS='+' read -r -a AND_SEGMENTS <<< "${OR_PATTERN}"
               
-              # Build find command for this pattern
               FIND_CMD="find . -type f -name '*.html'"
               for SEGMENT in "${AND_SEGMENTS[@]}"; do
                 FIND_CMD="$FIND_CMD -and -name '*${SEGMENT}*'"
               done
               
               echo "Executing find command: $FIND_CMD"
-              # Execute the find command and store results
               while IFS= read -r file; do
                 if [ -n "$file" ]; then
                   MATCHING_FILES+=("$file")
@@ -87,7 +84,6 @@ jobs:
             done
           fi
           
-          # Remove duplicates and empty entries
           if [ ${#MATCHING_FILES[@]} -gt 0 ]; then
             MATCHING_FILES=($(printf "%s\n" "${MATCHING_FILES[@]}" | sort -u))
           fi
@@ -110,28 +106,52 @@ jobs:
             echo "  - $FILE"
           done
           
-          # Perform search and replace
-          MODIFIED_FILES=0
-          for FILE in "${MATCHING_FILES[@]}"; do
-            if [[ -f "$FILE" && "$FILE" == *.html ]]; then
-              echo -e "\nProcessing: $FILE"
-              FILE_MODIFIED=0
-              for i in "${!SEARCH_ARRAY[@]}"; do
-                if grep -q "${SEARCH_ARRAY[$i]}" "$FILE"; then
-                  sed -i "s|$(printf '%s\n' "${SEARCH_ARRAY[$i]}" | sed 's:[\\/&]:\\&:g')|$(printf '%s\n' "${REPLACE_ARRAY[$i]}" | sed 's:[\\/&]:\\&:g')|g" "$FILE"
-                  echo "  ✓ Replaced '${SEARCH_ARRAY[$i]}' with '${REPLACE_ARRAY[$i]}'"
-                  FILE_MODIFIED=1
-                fi
-              done
-              if [ $FILE_MODIFIED -eq 1 ]; then
-                ((MODIFIED_FILES++))
-              fi
-            fi
-          done
+          # Perform search and replace using Python for better Unicode handling
+          cat << 'EOF' > replace.py
+          import sys
+          import os
           
-          echo -e "\n=== Operation Complete ==="
-          echo "Files processed: ${#MATCHING_FILES[@]}"
-          echo "Files modified: $MODIFIED_FILES"
+          def replace_in_file(file_path, search_phrases, replace_phrases):
+              try:
+                  with open(file_path, 'r', encoding='utf-8') as f:
+                      content = f.read()
+                  
+                  modified = False
+                  for search, replace in zip(search_phrases, replace_phrases):
+                      if search in content:
+                          content = content.replace(search, replace)
+                          print(f"  ✓ Replaced '{search}' with '{replace}'")
+                          modified = True
+                  
+                  if modified:
+                      with open(file_path, 'w', encoding='utf-8') as f:
+                          f.write(content)
+                      return True
+                  return False
+              except Exception as e:
+                  print(f"Error processing {file_path}: {str(e)}")
+                  return False
+
+          if __name__ == '__main__':
+              search_phrases = sys.argv[1].split('|')
+              replace_phrases = sys.argv[2].split('|')
+              files = sys.argv[3:]
+              
+              modified_count = 0
+              for file in files:
+                  print(f"\nProcessing: {file}")
+                  if replace_in_file(file, search_phrases, replace_phrases):
+                      modified_count += 1
+              
+              print(f"\n=== Operation Complete ===")
+              print(f"Files processed: {len(files)}")
+              print(f"Files modified: {modified_count}")
+              
+              # Exit with success only if we modified at least one file
+              sys.exit(0 if modified_count > 0 else 1)
+          EOF
+          
+          python3 replace.py "$SEARCH_PHRASES" "$REPLACE_PHRASES" "${MATCHING_FILES[@]}"
           
           # Check if there are changes to commit
           if git diff --quiet; then
@@ -143,7 +163,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
-          git commit -m "Batch replace on $(date +'%Y-%m-%d') - Modified $MODIFIED_FILES files"
+          git commit -m "Batch replace on $(date +'%Y-%m-%d') - Modified files"
           echo "✅ Changes committed successfully"
       
       - name: Push changes
