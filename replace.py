@@ -37,5 +37,7 @@ if __name__ == '__main__':
     print(f"Files processed: {len(files)}")
     print(f"Files modified: {modified_count}")
     
-    # Exit with success only if we modified at least one file
-    sys.exit(0 if modified_count > 0 else 1)
+    # Always exit with code 0 unless there's an actual error
+    if modified_count == 0:
+        print("No files needed modification - completing successfully")
+    sys.exit(0)
